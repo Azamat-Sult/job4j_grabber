@@ -11,6 +11,10 @@ public class Post {
     private String description;
     private LocalDateTime created;
 
+    public Post() {
+
+    }
+
     public Post(int id, String title, String link, String description, LocalDateTime created) {
         this.id = id;
         this.title = title;
@@ -78,4 +82,5 @@ public class Post {
     public int hashCode() {
         return Objects.hash(id, title, link, description, created);
     }
+
 }
