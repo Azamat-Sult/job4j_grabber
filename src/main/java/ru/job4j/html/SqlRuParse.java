@@ -6,6 +6,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import ru.job4j.grabber.Parse;
 import ru.job4j.grabber.Post;
+import ru.job4j.grabber.utils.DateTimeParser;
 import ru.job4j.grabber.utils.SqlRuDateTimeParser;
 
 import java.io.IOException;
@@ -15,6 +16,12 @@ import java.util.List;
 public class SqlRuParse implements Parse {
 
     private static final int PAGES_TO_PARSE = 5;
+
+    private final DateTimeParser dtParser;
+
+    public SqlRuParse(DateTimeParser dateTimeParser) {
+        this.dtParser = dateTimeParser;
+    }
 
     @Override
     public List<Post> list(String link) throws IOException {
@@ -37,12 +44,9 @@ public class SqlRuParse implements Parse {
 
         Document postPage = Jsoup.connect(link).get();
 
-        Elements postTitleBlock
-                = postPage.select("td.messageHeader");
-        Elements postTextBlock
-                = postPage.select("td.msgBody");
-        Elements postDateBlock
-                = postPage.select("td.msgFooter");
+        Elements postTitleBlock = postPage.select("td.messageHeader");
+        Elements postTextBlock = postPage.select("td.msgBody");
+        Elements postDateBlock = postPage.select("td.msgFooter");
 
         Element postTitle = postTitleBlock.get(0);
         Element postText = postTextBlock.get(1);
@@ -57,8 +61,6 @@ public class SqlRuParse implements Parse {
             dateOfPost = split[0] + " " + split[1] + " " + split[2] + " " + split[3];
         }
 
-        SqlRuDateTimeParser dtParser = new SqlRuDateTimeParser();
-
         Post rslPost = new Post();
         rslPost.setTitle(postTitle.text().replace(" [new]", ""));
         rslPost.setLink(link);
@@ -70,7 +72,7 @@ public class SqlRuParse implements Parse {
 
     public static void main(String[] args) throws Exception {
 
-        SqlRuParse parser = new SqlRuParse();
+        SqlRuParse parser = new SqlRuParse(new SqlRuDateTimeParser());
 
         List<Post> allPagesPosts = new ArrayList<>();
 
