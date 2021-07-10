@@ -85,12 +85,20 @@ public class Post {
 
     @Override
     public String toString() {
-        return "Post{"
+        String ln = System.lineSeparator();
+        return "Post {"
+                + ln
                 + "id=" + id
-                + ", title='" + title + '\''
-                + ", link='" + link + '\''
-                + ", description='" + description + '\''
-                + ", created=" + created
-                + '}';
+                + ln
+                + "title='" + title + '\''
+                + ln
+                + "link='" + link + '\''
+                + ln
+                + "description='" + description + '\''
+                + ln
+                + "created=" + created
+                + ln
+                + '}'
+                + ln;
     }
 }
