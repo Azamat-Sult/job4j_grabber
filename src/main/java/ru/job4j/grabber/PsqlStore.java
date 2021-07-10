@@ -57,7 +57,8 @@ public class PsqlStore implements Store, AutoCloseable {
 
     public Post insertAndReturnID(Post post) {
         try (PreparedStatement statement =
-                     cnn.prepareStatement("insert into post (name, text, link, created) values (?, ?, ?, ?)",
+                     cnn.prepareStatement(
+                             "insert into post (name, text, link, created) values (?, ?, ?, ?) on conflict do nothing",
                              Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, post.getTitle());
             statement.setString(2, post.getDescription());
@@ -121,7 +122,7 @@ public class PsqlStore implements Store, AutoCloseable {
         pStore.save(post2);
         pStore.save(post3);
 
-        System.out.println(pStore.findById(12));
+        System.out.println(pStore.findById(21));
 
         List<Post> allPosts = pStore.getAll();
         for (Post post : allPosts) {
