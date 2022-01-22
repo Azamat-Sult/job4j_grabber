@@ -29,11 +29,18 @@ public class SqlRuParse implements Parse {
 
         Document doc = Jsoup.connect(link).get();
         Elements row = doc.select(".postslisttopic");
+        Post javaVac;
 
         for (Element td : row) {
             Element href = td.child(0);
             String linkPost = href.attr("href");
-            rsl.add(detail(linkPost));
+            javaVac = detail(linkPost);
+            if (javaVac.getDescription().contains("java")
+                    || javaVac.getDescription().contains("Java")
+                    && !javaVac.getDescription().contains("JavaScript")
+                    && !javaVac.getDescription().contains("Javascript")) {
+                rsl.add(javaVac);
+            }
         }
 
         return rsl;
